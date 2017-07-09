@@ -1,0 +1,13 @@
+---
+- name: LOADBALANCER | Create proxy confs
+  template:
+    src: nginx/proxy.conf.jinja2
+    dest: "/etc/nginx/proxies-available/{{ outer_item.key }}.conf"
+  register: changed_confs
+
+- name: LOADBALANCER | Enable proxy confs
+  file:
+    src: "/etc/nginx/proxies-available/{{ outer_item.key }}.conf"
+    dest: "/etc/nginx/proxies-enabled/{{ outer_item.key }}.conf"
+    state: link
+  when: changed_confs.changed

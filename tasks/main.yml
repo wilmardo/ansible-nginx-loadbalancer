@@ -1,0 +1,12 @@
+---
+- stat:
+    path: /etc/nginx/proxies-available/http-forward.conf
+  register: is_installed
+
+- include: setup.yml
+  when: is_installed.stat.exists == False
+
+- include: proxy-confs.yml
+  with_dict: "{{ proxies }}"
+  loop_control:
+    loop_var: outer_item

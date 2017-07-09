@@ -1,0 +1,28 @@
+---
+- name: LOADBALANCER | Create proxies-available folder
+  file:
+    path: /etc/nginx/proxies-available/
+    state: directory
+
+- name: LOADBALANCER | Create proxies-enabled folder
+  file:
+    path: /etc/nginx/proxies-enabled/
+    state: directory
+
+- name: LOADBALANCER | Create http to https forward
+  template:
+    src: nginx/http-forward.conf.jinja2
+    dest: /etc/nginx/proxies-available/http-forward.conf
+
+- name: LOADBALANCER | Enable http to https forward
+  file:
+    src: /etc/nginx/proxies-available/http-forward.conf
+    dest: /etc/nginx/proxies-enabled/http-forward.conf
+    state: link
+
+- name: LOADBALANCER | Enable EPOLL in nginx.conf
+  lineinfile:
+    path: /etc/nginx/nginx.conf
+    line: "use epoll; \n"
+    state: present
+    insertafter: "^events {\n"

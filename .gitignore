@@ -1,0 +1,6 @@
+.vagrant/
+.idea/
+galaxy-roles/
+nextcloud_instances/
+*.retry
+*.log

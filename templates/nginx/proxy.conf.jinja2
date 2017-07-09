@@ -1,0 +1,30 @@
+server {
+    listen              443 ssl http2;
+    listen              [::]:443 ssl http2;
+
+    server_name         {{ outer_item.value.domain }};
+
+    ssl                 on;
+    ssl_certificate     /etc/letsencrypt/live/{{ outer_item.value.domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ outer_item.value.domain }}/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/{{ outer_item.value.domain }}/chain.pem;
+    ssl_stapling        on;
+    ssl_stapling_verify on;
+    ssl_session_timeout 1d;
+    ssl_session_cache   shared:SSL:50m;
+    ssl_session_tickets off;
+
+    add_header          Strict-Transport-Security "max-age=31536000; preload";
+    add_header          X-Frame-Options SAMEORIGIN;
+
+    {% if outer_item.value.server_vars is defined %}
+        {{ outer_item.value.server_vars }}
+    {% endif %}
+
+    location / {
+        proxy_pass      http://{{ outer_item.value.ip }}:{{ outer_item.value.port }};
+        {% if outer_item.value.location_vars is defined %}
+            {{ outer_item.value.location_vars }}
+        {% endif %}
+    }
+}
