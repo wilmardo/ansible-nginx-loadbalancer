@@ -1,4 +1,9 @@
 ---
+- name: LOADBALANCER | Move proxy_conf to /etc/nginx
+  copy  :
+    src: proxy_conf
+    dest: /etc/nginx/proxy_conf
+
 - name: LOADBALANCER | Create proxies-available folder
   file:
     path: /etc/nginx/proxies-available/
@@ -26,3 +31,11 @@
     line: "use epoll; \n"
     state: present
     insertafter: "^events {\n"
+
+- name: LOADBALANCER | Include proxy_conf nginx.conf
+  lineinfile:
+    path: /etc/nginx/nginx.conf
+    line: "include /etc/nginx/proxy_conf; \n"
+    state: present
+    insertafter: "^http {\n"
+
