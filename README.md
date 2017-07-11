@@ -1,4 +1,4 @@
-NGINX Loadbalancer [![Build Status](https://travis-ci.org/wilmardo/ansible-nginx-loadbalancer.svg?branch=master)](https://travis-ci.org/wilmardo/ansible-nginx-loadbalancer)
+NGINX Loadbalancer [![Build Status](https://travis-ci.org/wilmardo/ansible-role-nginx-loadbalancer.svg?branch=master)](https://travis-ci.org/wilmardo/ansible-role-nginx-loadbalancer)
 =========
 
 Ansible role to create letsencrypt certificates
