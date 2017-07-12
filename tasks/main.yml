@@ -6,6 +6,14 @@
 - include: setup.yml
   when: is_installed.stat.exists == False
 
+- name: LOADBALANCER | Include proxy_conf nginx.conf
+  lineinfile:
+    path: /etc/nginx/nginx.conf
+    line: "include /etc/nginx/proxy_conf; \n"
+    regexp: "^include /etc/nginx/proxy_conf;"
+    state: present
+    insertafter: "^http {\n"
+
 - include: proxy-confs.yml
   with_dict: "{{ proxies }}"
   loop_control:

@@ -14,6 +14,11 @@
     path: /etc/nginx/proxies-enabled/
     state: directory
 
+- name: LOADBALANCER | Create letsencrypt folder
+  file:
+    path: /usr/share/nginx/letsencrypt
+    state: directory
+
 - name: LOADBALANCER | Create http to https forward
   template:
     src: nginx/http-forward.conf.jinja2
@@ -31,11 +36,3 @@
     line: "use epoll; \n"
     state: present
     insertafter: "^events {\n"
-
-- name: LOADBALANCER | Include proxy_conf nginx.conf
-  lineinfile:
-    path: /etc/nginx/nginx.conf
-    line: "include /etc/nginx/proxy_conf; \n"
-    state: present
-    insertafter: "^http {\n"
-
