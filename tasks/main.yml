@@ -1,4 +1,6 @@
 ---
+#TODO: Generate fake cert to default to in conf so the directives are there for certbot to hook to.
+
 - stat:
     path: /etc/nginx/proxies-available/http-forward.conf
   register: is_installed

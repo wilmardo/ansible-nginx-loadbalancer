@@ -1,5 +1,16 @@
 ---
-- hosts: localhost
-  remote_user: root
+- hosts: all
+  become: yes
+  vars:
+    proxies:
+      couchpotato:
+        domain: "example.com"
+        ip: "192.168.1.10"
+        port: 5050
+        basic_auth:
+          name: user
+          password: password
+
   roles:
-    - ansible-role-nginx-loadbalancer
+    - role: geerlingguy.nginx
+    - role: ansible-role-nginx-loadbalancer

@@ -16,3 +16,21 @@
     dest: "/etc/nginx/proxies-enabled/{{ outer_item.key }}.conf"
     state: link
   when: changed_confs.changed
+
+- block:
+    - file:
+        path: /etc/nginx/basix-auth
+        state: directory
+        owner: root
+        group: nginx
+
+    - htpasswd:
+        path: /etc/nginx/basix-auth/.passwd_{{ outer_item.value.domain }}
+        name: "{{ item.name }}"
+        password: "{{ item.password }}"
+        owner: root
+        group: nginx
+        mode: 0640
+      with_items: outer_item.value.basic_auth
+
+  when: outer_item.value.basic_auth is defined

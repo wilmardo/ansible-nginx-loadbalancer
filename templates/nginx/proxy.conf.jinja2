@@ -23,6 +23,11 @@ server {
         {{ outer_item.value.server_vars }}
     {% endif %}
 
+    {% if outer_item.value.basic_auth is defined %}
+        auth_basic "Restricted";
+        auth_basic_user_file /etc/nginx/basix-auth/.passwd_{{ outer_item.value.domain }};
+    {% endif %}
+
     location / {
         proxy_pass      http://{{ outer_item.value.ip }}:{{ outer_item.value.port }};
         {% if outer_item.value.location_vars is defined %}
