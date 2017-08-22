@@ -3,7 +3,7 @@
   package:
     name: "{{ item }}"
     state: present
-  with_items: needed_packages
+  with_items: "{{ loadbalancer_needed_packages }}"
 
 - name: LOADBALANCER | Move proxy_conf to /etc/nginx
   copy:

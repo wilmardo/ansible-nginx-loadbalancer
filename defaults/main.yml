@@ -1,2 +1,2 @@
-needed_packages:
+loadbalancer_needed_packages:
   - apache2-utils
