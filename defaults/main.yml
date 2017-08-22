@@ -1,2 +1,5 @@
-loadbalancer_needed_packages:
+loadbalancer_yum_packages:
+  - httpd-tools
+
+loadbalancer_apt_packages:
   - apache2-utils
