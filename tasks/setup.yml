@@ -6,8 +6,8 @@
   with_items: "{{ loadbalancer_yum_packages }}"
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
-- name: LOADBAlANCER | Yum install needed packages
-  yum:
+- name: LOADBAlANCER | Apt install needed packages
+  apt:
     name: "{{ item }}"
     state: present
   with_items: "{{ loadbalancer_apt_packages }}"
