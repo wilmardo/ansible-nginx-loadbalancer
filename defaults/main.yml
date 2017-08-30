@@ -1,5 +1,5 @@
 loadbalancer_yum_packages:
-  - httpd-tools
+  - python-passlib
 
 loadbalancer_apt_packages:
-  - apache2-utils
+  - python-passlib
