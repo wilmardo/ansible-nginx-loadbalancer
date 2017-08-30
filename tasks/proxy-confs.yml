@@ -18,6 +18,9 @@
   when: changed_confs.changed
 
 - block:
+    - debug:
+        var: outer_item.value
+    
     - file:
         path: /etc/nginx/basix-auth
         state: directory
