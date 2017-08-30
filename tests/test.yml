@@ -6,12 +6,15 @@
     - role: geerlingguy.nginx
     - role: ansible-role-nginx-loadbalancer
       vars: {
-        proxies:
-          servicename:
-            domain: "example.com"
-            ip: "192.168.1.10"
-            port: 5050
-            basic_auth:
-              name: user
+        proxies: {
+          servicename: {
+            domain: "example.com",
+            ip: "192.168.1.10",
+            port: 5050,
+            basic_auth: {
+              name: user,
               password: password
+            }
+          }
         }
+      }
