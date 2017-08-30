@@ -4,7 +4,7 @@
 
   roles:
     - role: geerlingguy.nginx
-    - role: ansible-role-nginx-loadbalancer
+    - role: "{{ lookup('env', 'TRAVIS_REPO_SLUG') | basename }}" #Gets only the repository name
       vars: {
         proxies: {
           servicename: {
