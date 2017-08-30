@@ -18,9 +18,6 @@
   when: changed_confs.changed
 
 - block:
-    - debug:
-        var: outer_item.value
-    
     - file:
         path: /etc/nginx/basix-auth
         state: directory
@@ -29,11 +26,10 @@
 
     - htpasswd:
         path: /etc/nginx/basix-auth/.passwd_{{ outer_item.value.domain }}
-        name: "{{ item.name }}"
-        password: "{{ item.password }}"
+        name: "{{ outer_item.value.basic_auth.name }}"
+        password: "{{ outer_item.value.basic_auth.password }}"
         owner: root
         group: nginx
         mode: 0640
-      with_items: outer_item.value.basic_auth
 
   when: outer_item.value.basic_auth is defined
