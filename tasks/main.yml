@@ -1,5 +1,6 @@
 ---
 #TODO: Generate fake cert to default to in conf so the directives are there for certbot to hook to.
+#TODO: Add tags to add domain, tasks add proxy_conf && generate cert
 
 - stat:
     path: /etc/nginx/proxies-available/http-forward.conf
