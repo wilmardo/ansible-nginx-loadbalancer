@@ -4,18 +4,37 @@
     path: "/etc/letsencrypt/live/{{ outer_item.value.domain }}/fullchain.pem"
   register: ssl_cert
 
-- name: LOADBALANCER | Create proxy confs
-  template:
-    src: nginx/proxy.conf.jinja2
-    dest: "/etc/nginx/proxies-available/{{ outer_item.key }}.conf"
-  register: changed_confs
+- block:
+    - name: LOADBALANCER | Create proxy confs for HTTP
+      template:
+        src: nginx/http-proxy.conf.jinja2
+        dest: "/etc/nginx/proxies-available/{{ outer_item.key }}.conf"
+      register: changed_http_confs
 
-- name: LOADBALANCER | Enable proxy confs
-  file:
-    src: "/etc/nginx/proxies-available/{{ outer_item.key }}.conf"
-    dest: "/etc/nginx/proxies-enabled/{{ outer_item.key }}.conf"
-    state: link
-  when: changed_confs.changed
+    - name: LOADBALANCER | Enable HTTP proxy confs
+      file:
+        src: "/etc/nginx/proxies-available/{{ outer_item.key }}.conf"
+        dest: "/etc/nginx/proxies-enabled/{{ outer_item.key }}.conf"
+        state: link
+      when: changed_http_confs.changed
+
+  when: outer_item.value.port == 80
+
+- block:
+    - name: LOADBALANCER | Create proxy confs for streams
+      template:
+        src: nginx/stream-proxy.conf.jinja2
+        dest: "/etc/nginx/proxies-available/{{ outer_item.key }}:{{ outer_item.value.port }}.conf"
+      register: changed_stream_confs
+
+    - name: LOADBALANCER | Enable stream proxy confs
+      file:
+        src: "/etc/nginx/proxies-available/{{ outer_item.key }}:{{ outer_item.value.port }}.conf"
+        dest: "/etc/nginx/proxies-enabled/{{ outer_item.key }}:{{ outer_item.value.port }}.conf"
+        state: link
+      when: changed_stream_confs.changed
+
+  when: outer_item.value.port != 80
 
 - block:
     - file:

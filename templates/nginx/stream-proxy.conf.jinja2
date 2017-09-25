@@ -1,0 +1,17 @@
+server {
+    listen              {{ outer_item.value.port }};
+    listen              [::]:{{ outer_item.value.port }};
+
+    server_name         {{ outer_item.value.domain }};
+
+    {% if outer_item.value.server_vars is defined %}
+        {{ outer_item.value.server_vars }}
+    {% endif %}
+
+    location / {
+        proxy_pass      http://{{ outer_item.value.ip }}:{{ outer_item.value.port }};
+        {% if outer_item.value.location_vars is defined %}
+            {{ outer_item.value.location_vars }}
+        {% endif %}
+    }
+}
