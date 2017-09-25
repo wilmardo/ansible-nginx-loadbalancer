@@ -34,7 +34,7 @@
         state: link
       when: changed_stream_confs.changed
 
-  when: outer_item.value.type == "stream"
+  when: outer_item.value.type is defined and outer_item.value.type == "stream"
 
 - block:
     - file:
