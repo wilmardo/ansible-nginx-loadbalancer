@@ -1,6 +1,5 @@
 ---
 - block:
-
     - name: LOADBALANCER | Check if SSL exists
       stat:
         path: "/etc/letsencrypt/live/{{ outer_item.value.domain }}/fullchain.pem"
@@ -25,13 +24,13 @@
     - name: LOADBALANCER | Create proxy confs for streams
       template:
         src: nginx/stream-proxy.conf.jinja2
-        dest: "/etc/nginx/proxies-available/{{ outer_item.key }}:{{ outer_item.value.port }}.conf"
+        dest: "/etc/nginx/proxies-available/{{ outer_item.key }}.conf"
       register: changed_stream_confs
 
     - name: LOADBALANCER | Enable stream proxy confs
       file:
-        src: "/etc/nginx/proxies-available/{{ outer_item.key }}:{{ outer_item.value.port }}.conf"
-        dest: "/etc/nginx/proxies-enabled/{{ outer_item.key }}:{{ outer_item.value.port }}.conf"
+        src: "/etc/nginx/proxies-available/{{ outer_item.key }}.conf"
+        dest: "/etc/nginx/proxies-enabled/{{ outer_item.key }}.conf"
         state: link
       when: changed_stream_confs.changed
 
