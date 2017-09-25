@@ -1,10 +1,11 @@
 ---
-- name: LOADBALANCER | Check if SSL exists
-  stat:
-    path: "/etc/letsencrypt/live/{{ outer_item.value.domain }}/fullchain.pem"
-  register: ssl_cert
-
 - block:
+
+    - name: LOADBALANCER | Check if SSL exists
+      stat:
+        path: "/etc/letsencrypt/live/{{ outer_item.value.domain }}/fullchain.pem"
+      register: ssl_cert
+
     - name: LOADBALANCER | Create proxy confs for HTTP
       template:
         src: nginx/http-proxy.conf.jinja2
