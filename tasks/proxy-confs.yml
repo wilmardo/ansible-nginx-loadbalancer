@@ -18,7 +18,7 @@
         state: link
       when: changed_http_confs.changed
 
-  when: outer_item.value.type|default(http)  == "http"
+  when: outer_item.value.type|default('http')  == 'http'
 
 - block:
     - name: LOADBALANCER | Create proxy confs for streams
@@ -34,7 +34,7 @@
         state: link
       when: changed_stream_confs.changed
 
-  when: outer_item.value.type|default(http) == "stream"
+  when: outer_item.value.type|default('http') == 'stream'
 
 - block:
     - file:
