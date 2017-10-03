@@ -33,22 +33,16 @@
     path: /usr/share/nginx/letsencrypt
     state: directory
 
-- name: LOADBALANCER | Create rewrites http > https and www > non-www
+- name: LOADBALANCER | Create rewrites http > https
   template:
-    src: "nginx/{{ item }}.jinja2"
-    dest: "/etc/nginx/proxies-available/{{ item }}"
-  with_items:
-    - http-rewrite.conf
-    - www-rewrite.conf
+    src: nginx/http-rewrite.conf.jinja2
+    dest: /etc/nginx/proxies-available/http-rewrite.conf
 
-- name: LOADBALANCER | Enable rewrites http > https and www > non-www
+- name: LOADBALANCER | Enable rewrites http > https
   file:
-    src: "/etc/nginx/proxies-available/{{ item }}"
-    dest: "/etc/nginx/proxies-enabled/{{ item }}"
+    src: /etc/nginx/proxies-available/http-rewrite.conf
+    dest: /etc/nginx/proxies-enabled/http-rewrite.conf
     state: link
-  with_items:
-    - http-rewrite.conf
-    - www-rewrite.conf
 
 - name: LOADBALANCER | Enable EPOLL in nginx.conf
   lineinfile:

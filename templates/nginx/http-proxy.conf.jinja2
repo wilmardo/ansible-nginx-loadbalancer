@@ -40,3 +40,27 @@ server {
     {% endif %}
     }
 }
+
+server {
+    listen              443 ssl http2;
+    listen              [::]:443 ssl http2;
+
+    server_name         www.{{ outer_item.value.domain }};
+
+    {% if ssl_cert.stat.exists %}
+        ssl                 on;
+        ssl_certificate     /etc/letsencrypt/live/www.{{ outer_item.value.domain }}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/www.{{ outer_item.value.domain }}/privkey.pem;
+        ssl_trusted_certificate /etc/letsencrypt/live/www.{{ outer_item.value.domain }}/chain.pem;
+        ssl_stapling        on;
+        ssl_stapling_verify on;
+        ssl_session_timeout 1d;
+        ssl_session_cache   shared:SSL:50m;
+        ssl_session_tickets off;
+
+        add_header          Strict-Transport-Security "max-age=31536000; preload";
+        add_header          X-Frame-Options SAMEORIGIN;
+    {% endif %}
+
+    return 301 https://{{ outer_item.value.domain }}$request_uri;
+}
