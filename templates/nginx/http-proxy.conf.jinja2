@@ -41,17 +41,18 @@ server {
     }
 }
 
+{% for rewrite in outer_item.value.rewrites %}
 server {
     listen              443 ssl http2;
     listen              [::]:443 ssl http2;
 
-    server_name         www.{{ outer_item.value.domain }};
+    server_name         {{ rewrite }};
 
     {% if ssl_cert.stat.exists %}
         ssl                 on;
-        ssl_certificate     /etc/letsencrypt/live/www.{{ outer_item.value.domain }}/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/www.{{ outer_item.value.domain }}/privkey.pem;
-        ssl_trusted_certificate /etc/letsencrypt/live/www.{{ outer_item.value.domain }}/chain.pem;
+        ssl_certificate     /etc/letsencrypt/live/{{ rewrite }}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/{{ rewrite }}/privkey.pem;
+        ssl_trusted_certificate /etc/letsencrypt/live/{{ rewrite }}/chain.pem;
         ssl_stapling        on;
         ssl_stapling_verify on;
         ssl_session_timeout 1d;
@@ -64,3 +65,4 @@ server {
 
     return 301 https://{{ outer_item.value.domain }}$request_uri;
 }
+{% endfor %}
