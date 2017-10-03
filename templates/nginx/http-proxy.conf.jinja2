@@ -29,7 +29,7 @@ server {
     {% endif %}
 
     location / {
-    {% if outer_item.value.ssl %}
+    {% if outer_item.value.ssl is defined %}
         proxy_pass      https://{{ outer_item.value.ip }}:443;
     {% else %}
         proxy_pass      http://{{ outer_item.value.ip }}:80;
