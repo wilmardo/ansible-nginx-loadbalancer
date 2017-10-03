@@ -41,7 +41,7 @@ server {
     }
 }
 
-{% for rewrite in outer_item.value.rewrites %}
+{% for rewrite in outer_item.value.rewrites|default() %}
 server {
     listen              443 ssl http2;
     listen              [::]:443 ssl http2;
