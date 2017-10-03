@@ -29,9 +29,14 @@ server {
     {% endif %}
 
     location / {
-        proxy_pass      http://{{ outer_item.value.ip }}:{{ outer_item.value.port }};
-        {% if outer_item.value.location_vars is defined %}
-            {{ outer_item.value.location_vars }}
-        {% endif %}
+    {% if outer_item.value.ssl %}
+        proxy_pass      https://{{ outer_item.value.ip }}:443;
+    {% else %}
+        proxy_pass      http://{{ outer_item.value.ip }}:80;
+    {% endif %}
+
+    {% if outer_item.value.location_vars is defined %}
+        {{ outer_item.value.location_vars }}
+    {% endif %}
     }
 }
