@@ -35,8 +35,13 @@
 
 - name: LOADBALANCER | Create http to https forward
   template:
-    src: nginx/http-forward.conf.jinja2
-    dest: /etc/nginx/proxies-available/http-forward.conf
+    src: nginx/http-rewrite.conf.jinja2
+    dest: /etc/nginx/proxies-available/http-rewrite.conf
+
+- name: LOADBALANCER | Create www to non-www forward
+  template:
+    src: nginx/www-rewrite.conf.jinja2
+    dest: /etc/nginx/proxies-available/www-rewrite.conf
 
 - name: LOADBALANCER | Enable http to https forward
   file:
